@@ -102,6 +102,7 @@ pub use iterator::Iterator;
 pub use write_batch::WriteBatch;
 pub use snapshot::Snapshot;
 pub use column_family::ColumnFamily;
+pub use internal::keys::ValueType;
 
 // Error types
 pub use status::Error as ToplingError;

@@ -54,11 +54,15 @@ impl DB {
 
         // Create database directory if it doesn't exist
         if options.db_options.create_if_missing {
-            if let Some(parent) = path.parent() {
-                std::fs::create_dir_all(parent).map_err(|e| {
-                    Status::io_error(Some(format!("Failed to create database directory: {}", e)))
-                })?;
-            }
+            std::fs::create_dir_all(&path).map_err(|e| {
+                Status::io_error(Some(format!("Failed to create database directory: {}", e)))
+            })?;
+
+            // Create a marker file to indicate database exists
+            let marker_path = path.join("IDENTITY");
+            std::fs::write(&marker_path, "toplingdb\n").map_err(|e| {
+                Status::io_error(Some(format!("Failed to create database marker file: {}", e)))
+            })?;
         }
 
         // Check if database exists

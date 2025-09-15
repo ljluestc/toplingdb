@@ -11,6 +11,24 @@ use crate::env::Env;
 use crate::filter::FilterPolicy;
 use crate::merge::MergeOperator;
 
+/// Table options for SSTable configuration
+#[derive(Debug, Clone)]
+pub struct TableOptions {
+    /// Block size for SST files
+    pub block_size: usize,
+    /// Compression type
+    pub compression: CompressionType,
+}
+
+impl Default for TableOptions {
+    fn default() -> Self {
+        Self {
+            block_size: 4 * 1024, // 4KB
+            compression: CompressionType::Snappy,
+        }
+    }
+}
+
 /// Database options
 #[derive(Debug, Clone)]
 pub struct Options {
@@ -18,6 +36,8 @@ pub struct Options {
     pub db_options: DBOptions,
     /// Column family options
     pub cf_options: ColumnFamilyOptions,
+    /// Table options
+    pub table_options: TableOptions,
 }
 
 impl Options {
@@ -26,6 +46,7 @@ impl Options {
         Self {
             db_options: DBOptions::default(),
             cf_options: ColumnFamilyOptions::default(),
+            table_options: TableOptions::default(),
         }
     }
 

@@ -1,16 +1,17 @@
 //! Database benchmarks
 
 use criterion::{criterion_group, criterion_main, Criterion, BatchSize, BenchmarkId};
+use std::sync::Arc;
 use tempfile::TempDir;
 use toplingdb::{DB, Options, ReadOptions, WriteOptions, WriteBatch};
 
-fn create_db() -> (DB, TempDir) {
+fn create_db() -> (Arc<DB>, TempDir) {
     let temp_dir = TempDir::new().unwrap();
     let path = temp_dir.path().join("benchmark_db");
 
     let mut options = Options::default();
     options.create_if_missing(true);
-    options.write_buffer_size(64 * 1024 * 1024); // 64MB
+    // Note: write_buffer_size method doesn't exist in current Options, skipping
 
     let db = DB::open(&options, &path).unwrap();
     (db, temp_dir)

@@ -67,7 +67,7 @@ pub fn crc32c_combine(crc1: u32, crc2: u32, len2: usize) -> u32 {
 
 /// Mask CRC value (used in some file formats)
 pub fn mask_crc(crc: u32) -> u32 {
-    ((crc >> 15) | (crc << 17)) + 0xa282ead8
+    ((crc >> 15) | (crc << 17)).wrapping_add(0xa282ead8)
 }
 
 /// Unmask CRC value
